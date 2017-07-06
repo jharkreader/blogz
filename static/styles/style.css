@@ -1,6 +1,16 @@
 html {
     font-family: Helvetica, sans-serif;
     color: #202099;
+    margin-left: 5%;
+}
+
+a:hover {
+    font-weight: bold;
+    color: #9090ff;
+
+}
+a:visited {
+    color: #202099;
 }
 
 .error {
