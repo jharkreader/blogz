@@ -1,5 +1,6 @@
 from flask import Flask, request, redirect, render_template, session, flash
 from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 
 
 app = Flask(__name__)
@@ -7,7 +8,7 @@ app.config['DEBUG'] = True
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://blogz:insecure@localhost:8889/blogz'
 app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
-app.secret_key = 'qwer654Beta##'
+app.secret_key = 'SUPER_SECRET_SQUIRREL_KEY'
 
 
 class BlogPost(db.Model):
@@ -15,10 +16,27 @@ class BlogPost(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     blog_title = db.Column(db.String(120))
     blog_text = db.Column(db.String(1024))
+    blog_date = db.Column(db.DateTime)
+    owner_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-    def __init__(self, blog_title, blog_text):
+    def __init__(self, blog_title, blog_text, owner, blog_date=None):
         self.blog_title = blog_title
         self.blog_text = blog_text
+        self.owner = owner
+        if blog_date is None:
+            blog_date = datetime.utcnow()
+        self.blog_date = blog_date
+
+class User(db.Model):
+
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(120), unique=True)
+    password = db.Column(db.String(120))
+    blogs = db.relationship('BlogPost', backref='owner')
+
+    def __init__(self, email, password):
+        self.email = email
+        self.password = password
 
 
 @app.route('/blog', methods=['GET', 'POST'])
