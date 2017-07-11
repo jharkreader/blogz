@@ -2,14 +2,14 @@
 
 {% block content %}  
 
-<h1>Log in to Get It Done</h1>
-<p>If you do not have an account, please <a href="/register">register</a>.</p>
+<h1>Log in to Blogz</h1>
+<p>If you do not have an account, please <a href="/signup">sign up here</a>.</p>
 
 <hr />
 <form action="/login" method="POST">
 
-    <p><label>Email: </label> 
-        <input type="email" name="email" value="{{ email }}"/>
+    <p><label>Username: </label> 
+        <input type="text" name="username" value="{{ username }}"/>
     </p>
     <p><label>Password: </label> 
         <input type="password" name="password"/>

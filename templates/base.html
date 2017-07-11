@@ -12,7 +12,17 @@
         <div>
             <a href='/blog'>Main Blog Page</a><span>&nbsp;&nbsp;|&nbsp;|&nbsp;|&nbsp;&nbsp;</span><a href='/newpost'>Add a Blog Post</a><span>&nbsp;&nbsp;|&nbsp;|&nbsp;|&nbsp;&nbsp;</span><a name="logout" href="/logout">Logout</a>
         </div>
-   
+
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <ul class=flashes>
+              {% for message in messages %}
+              <li>{{ message }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+
         {% block content %}
         {% endblock %}
 

@@ -43,9 +43,9 @@ class User(db.Model):
 @app.before_request
 def require_login():
 
-    allowed_routes = ['login', 'signup']
+    allowed_routes = ['login', 'signup', 'blog']
 
-    if request.endpoint not in allowed_routes and 'email' not in session:
+    if request.endpoint not in allowed_routes and 'username' not in session:
         return redirect('/login')
 
 
@@ -54,15 +54,17 @@ def require_login():
 def login():
 
     if request.method == 'POST':
-        email = request.form['email']
+        username = request.form['username']
         password = request.form['password']
-        user = User.query.filter_by(email=email).first()
+        user = User.query.filter_by(username=username).first()
         if user and check_pw_hash(password, user.pw_hash):
-            session['email'] = email
+            session['username'] = username
             flash("Logged in")
-            return redirect('/')
+            return redirect('/blog')
+        elif user and not check_pw_hash(password, user.pw_hash):
+            flash("User password incorrect.", 'error')
         else:
-            flash("User password incorrect, or user does not exist.", 'error')   
+            flash("User does not exist.", 'error')       
 
     return render_template('login.html')
 
@@ -75,47 +77,31 @@ def signup():
         password = request.form['password']
         verify = request.form['verify']
 
-        pw_error = ''
-        verify_pw_error = ''
-        username_error = ''
-
-        if len(password) < 3:
-            pw_error = "Password must be greater than 3 characters."
-        elif password != verify:
-            verify_pw_error = "Passwords must match."
-            pw_error = "Passwords must match."
-        else:
-            pass        
-
-        if not pw_error and not verify_pw_error and not username_error:
-            pass
-        else:
-            return "<h1>Error!</h1>"             
-
         existing_user = User.query.filter_by(username=username).first()
-        if not existing_user:
+
+        if len(username) < 3:            
+            flash("Username must be greater than 3 characters")
+        elif existing_user:
+            flash("Username is already in use.")
+        elif len(password) < 3:
+            flash("Password must be greater than 3 characters.")
+        elif password != verify:
+            flash("Passwords must match.")
+        else:
             new_user = User(username, password)
             db.session.add(new_user)
             db.session.commit()
             session['username'] = username
-            return redirect('/')
+            return redirect('/newpost')
 
-        else:
-            return "<h1>Duplicate user</h1>"
-
-
-    return render_template('signup.html', 
-        username_error=username_error, 
-        pw_error=pw_error, 
-        verify_pw_error=verify_pw_error, 
-        username=username)
+    return render_template('signup.html')
 
 
 @app.route('/logout')
 def logout():
 
-    del session['email']
-    return redirect('/')
+    del session['username']
+    return redirect('/blog')
 
 
 @app.route('/blog', methods=['GET', 'POST'])
@@ -145,7 +131,7 @@ def add_blog():
             text_error = "Please enter blog text."    
         
         if not title_error and not text_error:
-            owner = User.query.filter_by(email=session['email']).first()
+            owner = User.query.filter_by(username=session['username']).first()
             new_blog = BlogPost(blog_title, blog_text, owner)
             db.session.add(new_blog)
             db.session.commit()

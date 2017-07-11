@@ -7,15 +7,12 @@
 <form action="/signup" method="POST">
     <p><label>Username: </label>
         <input type="text" name="username" value="{{ username }}"/>
-        <span class="error">{{ username_error }}</span>
     </p>
     <p><label>Password: </label> 
-        <input type="text" name="password"/>
-        <span class="error">{{ pw_error }}</span>
+        <input type="password" name="password"/>
     </p>
     <p><label>Verify password: </label> 
-        <input type="text" name="v_password"/>
-        <span class="error">{{ verify_pw_error }}</span>
+        <input type="password" name="verify"/>
     </p>
     <input class="submit" type="submit" value="Submit!"/>
 </form>    
