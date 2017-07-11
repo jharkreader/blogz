@@ -48,7 +48,7 @@ def require_login():
 
     allowed_routes = ['login', 'signup', 'list_blogs', 'index']
 
-    if request.endpoint not in allowed_routes and 'username' not in session:
+    if request.endpoint not in allowed_routes and 'username' not in session and '/static/' not in request.path:
         return redirect('/login')
 
 

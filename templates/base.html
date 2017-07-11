@@ -10,10 +10,11 @@
     <body>
 
         <div>
-            <a href='/blog'>Main Blog Page</a><span>&nbsp;&nbsp;|&nbsp;|&nbsp;|&nbsp;&nbsp;</span><a href='/newpost'>Add a Blog Post</a><span>&nbsp;&nbsp;|&nbsp;|&nbsp;|&nbsp;&nbsp;</span><a name="logout" href="/logout">Logout</a>
-            <span class="session-info">Logged in: 
+            <a href='/blog'>Main Blog Page</a><span>&nbsp;&nbsp;|&nbsp;|&nbsp;|&nbsp;&nbsp;</span><a href='/newpost'>Add a Blog Post</a><span>&nbsp;&nbsp;|&nbsp;|&nbsp;|&nbsp;&nbsp;</span><a href='/'>User List</a>
             {% if 'username' in session %}
+            <span class="session-info">Logged in:             
             {{ session['username'] }}
+            <p><a name="logout" href="/logout">Logout</a></p>
             {% endif %}
             </span>
         </div>
