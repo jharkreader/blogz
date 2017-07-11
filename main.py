@@ -43,7 +43,7 @@ class User(db.Model):
 @app.before_request
 def require_login():
 
-    allowed_routes = ['login', 'signup', 'blog']
+    allowed_routes = ['login', 'signup', 'list_blogs', 'index']
 
     if request.endpoint not in allowed_routes and 'username' not in session:
         return redirect('/login')
@@ -105,7 +105,7 @@ def logout():
 
 
 @app.route('/blog', methods=['GET', 'POST'])
-def index():
+def list_blogs():
     blogs = BlogPost.query.all()
 
     if 'id' in request.args:
@@ -149,6 +149,12 @@ def add_blog():
     else:
         return render_template('newpost.html')
 
+@app.route('/', methods=['GET'])
+def index():
+
+    users = User.query.all()
+    # Query param log goes here
+    return render_template('index.html', users=users)
 
 if __name__ == '__main__':
     app.run()  
