@@ -1,6 +1,7 @@
 from flask import Flask, request, redirect, render_template, session, flash
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from hashutils import make_pw_hash, check_pw_hash
 
 
 app = Flask(__name__)
@@ -30,13 +31,91 @@ class BlogPost(db.Model):
 class User(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(120), unique=True)
-    password = db.Column(db.String(120))
+    username = db.Column(db.String(120), unique=True)
+    pw_hash = db.Column(db.String(120))
     blogs = db.relationship('BlogPost', backref='owner')
 
-    def __init__(self, email, password):
-        self.email = email
-        self.password = password
+    def __init__(self, username, password):
+        self.username = username
+        self.pw_hash = make_pw_hash(password)
+
+
+@app.before_request
+def require_login():
+
+    allowed_routes = ['login', 'signup']
+
+    if request.endpoint not in allowed_routes and 'email' not in session:
+        return redirect('/login')
+
+
+
+@app.route('/login', methods=['POST', 'GET'])
+def login():
+
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        user = User.query.filter_by(email=email).first()
+        if user and check_pw_hash(password, user.pw_hash):
+            session['email'] = email
+            flash("Logged in")
+            return redirect('/')
+        else:
+            flash("User password incorrect, or user does not exist.", 'error')   
+
+    return render_template('login.html')
+
+
+@app.route('/signup', methods=['POST', 'GET'])
+def signup():
+
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        verify = request.form['verify']
+
+        pw_error = ''
+        verify_pw_error = ''
+        username_error = ''
+
+        if len(password) < 3:
+            pw_error = "Password must be greater than 3 characters."
+        elif password != verify:
+            verify_pw_error = "Passwords must match."
+            pw_error = "Passwords must match."
+        else:
+            pass        
+
+        if not pw_error and not verify_pw_error and not username_error:
+            pass
+        else:
+            return "<h1>Error!</h1>"             
+
+        existing_user = User.query.filter_by(username=username).first()
+        if not existing_user:
+            new_user = User(username, password)
+            db.session.add(new_user)
+            db.session.commit()
+            session['username'] = username
+            return redirect('/')
+
+        else:
+            return "<h1>Duplicate user</h1>"
+
+
+    return render_template('signup.html', 
+        username_error=username_error, 
+        pw_error=pw_error, 
+        verify_pw_error=verify_pw_error, 
+        username=username)
+
+
+@app.route('/logout')
+def logout():
+
+    del session['email']
+    return redirect('/')
 
 
 @app.route('/blog', methods=['GET', 'POST'])
@@ -66,8 +145,8 @@ def add_blog():
             text_error = "Please enter blog text."    
         
         if not title_error and not text_error:
-
-            new_blog = BlogPost(blog_title, blog_text)
+            owner = User.query.filter_by(email=session['email']).first()
+            new_blog = BlogPost(blog_title, blog_text, owner)
             db.session.add(new_blog)
             db.session.commit()
             id_param = new_blog.id
