@@ -39,6 +39,9 @@ class User(db.Model):
         self.username = username
         self.pw_hash = make_pw_hash(password)
 
+    def __repr__(self):
+        return self.username    
+
 
 @app.before_request
 def require_login():
@@ -154,6 +157,12 @@ def index():
 
     users = User.query.all()
     # Query param log goes here
+    if 'id' in request.args:
+        blog_id = request.args['id']
+        blog_post = BlogPost.query.get(blog_id)
+        return render_template('post.html', blog=blog_post)
+    # need post template as well
+
     return render_template('index.html', users=users)
 
 if __name__ == '__main__':

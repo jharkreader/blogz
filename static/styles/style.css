@@ -1,12 +1,12 @@
 html {
     font-family: Helvetica, sans-serif;
     color: #202099;
-    margin-left: 5%;
+    margin-left: 2%;
 }
 
 a:hover {
     font-weight: bold;
-    color: #9090ff;
+    color: #000000;
 
 }
 a:visited {
@@ -17,3 +17,17 @@ a:visited {
     color: red;
 }
 
+.flashes {
+    color: red;
+}
+
+.attribution {
+    font-size: 10px;
+    padding-left: 200px;
+}
+
+.session-info {
+    float: right;
+    font-size: 10px;
+    padding-right: 50px;
+}
