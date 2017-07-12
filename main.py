@@ -156,12 +156,13 @@ def add_blog():
 def index():
 
     users = User.query.all()
-    # Query param log goes here
-    if 'id' in request.args:
-        blog_id = request.args['id']
-        blog_post = BlogPost.query.get(blog_id)
-        return render_template('post.html', blog=blog_post)
-    # need post template as well
+
+    if 'user' in request.args:
+        username = request.args['user']
+        owner = User.query.filter_by(username=username).first()
+        user_blogs = BlogPost.query.filter_by(owner=owner).all()
+
+        return render_template('singleuser.html', user_blogs=user_blogs)
 
     return render_template('index.html', users=users)
 

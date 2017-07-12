@@ -4,6 +4,13 @@ html {
     margin-left: 2%;
 }
 
+textarea {
+    vertical-align: top;
+    width: 250px;
+    height: 200px;
+    resize: none;
+}
+
 a:hover {
     font-weight: bold;
     color: #000000;

@@ -7,6 +7,6 @@
 
 <p>{{ blog.blog_text }}</p>
 
-<p class="attribution">Written by {{ blog.owner }} at {{ blog.blog_date }}</p>
+<p class="attribution">Written by <a href="/?user={{blog.owner}}">{{ blog.owner }}</a> at {{ blog.blog_date }}</p>
 
 {% endblock %}
