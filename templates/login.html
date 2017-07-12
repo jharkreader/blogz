@@ -1,22 +1,22 @@
 {% extends "base.html" %}
 
-{% block content %}  
+{% block content %}
 
-<h1>Log in to Blogz</h1>
-<p>If you do not have an account, please <a href="/signup">sign up here</a>.</p>
+    <h1>Log in to Blogz</h1>
+    <p>If you do not have an account, please <a href="/signup">sign up here</a>.</p>
 
-<hr />
-<form action="/login" method="POST">
+    <hr/>
+    <form action="/login" method="POST">
 
-    <p><label>Username: </label> 
-        <input type="text" name="username" value="{{ username }}"/>
-    </p>
-    <p><label>Password: </label> 
-        <input type="password" name="password"/>
-    </p>
+        <p><label>Username: </label>
+            <input type="text" name="username" value="{{ username }}"/>
+        </p>
+        <p><label>Password: </label>
+            <input type="password" name="password"/>
+        </p>
 
-    <input class="submit" type="submit" value="Log in!"/>
-</form>
+        <input class="submit" type="submit" value="Log in!"/>
+    </form>
 
 
 

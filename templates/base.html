@@ -1,39 +1,41 @@
-<!DOCTYPE = html>
+<!DOCTYPE html>
+<html lang="en">
 
-<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Blogz</title>
+    <!-- TODO: consider adding Bootstrap CSS framework -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}">
+</head>
 
-    <head>
-        <title>Blogz</title>
-        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/style.css') }}">    
-    </head>
+<body>
 
-    <body>
+<div>
+    <a href='/'>User List</a><span>&nbsp;&nbsp;|&nbsp;|&nbsp;|&nbsp;&nbsp;</span><a href='/blog'>Main Blog
+    Page</a><span>&nbsp;&nbsp;|&nbsp;|&nbsp;|&nbsp;&nbsp;</span><a href='/newpost'>Add a Blog Post</a><span>&nbsp;&nbsp;|&nbsp;|&nbsp;|&nbsp;&nbsp;</span><a
+        href='/login'>Log in</a>
+    {% if 'username' in session %}
+        <span class="session-info">Logged in:
+        {{ session['username'] }}
+        <p><a name="logout" href="/logout">Logout</a></p>
+    {% endif %}
+    </span>
+</div>
 
-        <div>
-            <a href='/'>User List</a><span>&nbsp;&nbsp;|&nbsp;|&nbsp;|&nbsp;&nbsp;</span><a href='/blog'>Main Blog Page</a><span>&nbsp;&nbsp;|&nbsp;|&nbsp;|&nbsp;&nbsp;</span><a href='/newpost'>Add a Blog Post</a><span>&nbsp;&nbsp;|&nbsp;|&nbsp;|&nbsp;&nbsp;</span><a href='/login'>Log in</a>
-            {% if 'username' in session %}
-            <span class="session-info">Logged in:             
-            {{ session['username'] }}
-            <p><a name="logout" href="/logout">Logout</a></p>
-            {% endif %}
-            </span>
-        </div>
+<hr/>
 
-        <hr />
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <ul class="flashes">
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endwith %}
 
-        {% with messages = get_flashed_messages() %}
-          {% if messages %}
-            <ul class=flashes>
-              {% for message in messages %}
-              <li>{{ message }}</li>
-              {% endfor %}
-            </ul>
-          {% endif %}
-        {% endwith %}
+{% block content %}
+{% endblock %}
 
-        {% block content %}
-        {% endblock %}
-
-    </body>    
-
+</body>
 </html>     

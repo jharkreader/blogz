@@ -2,6 +2,7 @@ from hashutils import make_pw_hash
 from app import db
 from datetime import datetime
 
+
 class BlogPost(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
@@ -17,6 +18,7 @@ class BlogPost(db.Model):
         if blog_date is None:
             blog_date = datetime.utcnow()
         self.blog_date = blog_date
+
 
 class User(db.Model):
 

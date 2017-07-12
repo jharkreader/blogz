@@ -1,24 +1,25 @@
 {% extends "base.html" %}
 
-{% block content %}     
-<h1>Blogz!</h1>
+{% block content %}
+    <h1>Blogz!</h1>
 
-<hr />
+    <hr/>
 
-{% if blogs|length == 0 %}
-<p>No posts yet!</p>
+    {% if blogs|length == 0 %}
+        <p>No posts yet!</p>
 
-{% else %}
+    {% else %}
 
-{% for blog in blogs %}
-<h3><a href="/blog?id={{ blog.id }}"> {{blog.blog_title}} </a></h3>
-<p> {{blog.blog_text}} </p>
+        {% for blog in blogs %}
+            <h3><a href="/blog?id={{ blog.id }}"> {{ blog.blog_title }} </a></h3>
+            <p> {{ blog.blog_text }} </p>
 
-<p class="attribution">Written by <a href="/?user={{blog.owner}}">{{ blog.owner }}</a> at {{ blog.blog_date }}</p>
+            <p class="attribution">Written by <a href="/?user={{ blog.owner }}">{{ blog.owner }}</a>
+                at {{ blog.blog_date }}</p>
 
-{% endfor %}
+        {% endfor %}
 
-{% endif %}
+    {% endif %}
 
 {% endblock %}
 

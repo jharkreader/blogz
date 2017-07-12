@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
-{% block content %}    
+{% block content %}
 
-<h3>{{ blog.blog_title }}</h3>
+    <h3>{{ blog.blog_title }}</h3>
 
 
-<p>{{ blog.blog_text }}</p>
+    <p>{{ blog.blog_text }}</p>
 
-<p class="attribution">Written by <a href="/?user={{blog.owner}}">{{ blog.owner }}</a> at {{ blog.blog_date }}</p>
+    <p class="attribution">Written by <a href="/?user={{ blog.owner }}">{{ blog.owner }}</a> at {{ blog.blog_date }}</p>
 
 {% endblock %}
