@@ -63,7 +63,7 @@ def login():
         if user and check_pw_hash(password, user.pw_hash):
             session['username'] = username
             flash("Logged in")
-            return redirect('/blog')
+            return redirect('/newpost')
         elif user and not check_pw_hash(password, user.pw_hash):
             flash("User password incorrect.", 'error')
         else:
