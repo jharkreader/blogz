@@ -9,9 +9,9 @@
             <input type="text" name="blog_title" value="{{ blog_title }}"/>             
             <span class="error">{{ title_error }}</span>
         </p>
-         <p>
+        <p>
             <div><label>Text of your post:</label></div>
-            <textarea style="vertical-align:top;" rows="10" columns="30" name="blog_text">{{ blog_text }}</textarea>           
+            <textarea name="blog_text">{{ blog_text }}</textarea>           
             <span class="error">{{ text_error }}</span>
         </p>       
         <input type="submit" value="Post it!" />
